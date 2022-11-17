@@ -11,4 +11,5 @@ void loop() {
   uint8_t val = digitalRead(DIGITAL_PIN);  // val O or 1 or equivalent LOW or HIGH
   Serial.println(val);          // debug value
   delay(500);
+  
 }
