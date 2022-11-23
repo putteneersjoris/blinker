@@ -22,6 +22,7 @@
 
 int counter = 0;
 HTTPClient http;
+String mac;
 
 
 
@@ -55,6 +56,7 @@ void setup() {
 
   Serial.println("Connected to the WiFi network");
   Serial.println(WiFi.localIP());
+  mac = WiFi.macAddress();
 
 
 
@@ -101,35 +103,61 @@ void printOled(){
   delay(2000);
 }
 
-void loop() {
-  blinkLed();
 
-  // printOled();
-
-
-  //putmsg
-  // http.begin('http://jsonplaceholder.typicode.com/users/1');
+void sendData(uint8_t sensorID, String value, String time)
+{
   http.begin("http://hasdata.xyz/");
   http.addHeader("Content-Type", "application/json");
 
   String putMsg = "{\"mac\":\"";
-  putMsg.concat('mac');
-  putMsg.concat("\", \"type\":");
-  putMsg.concat('type');
-  putMsg.concat(",\"metric\":");
-  putMsg.concat('metric');
-  putMsg.concat(", \"value\":\"");
-  putMsg.concat('value');
+  putMsg.concat(mac);
+  putMsg.concat("\", \"sensorID\":");
+  putMsg.concat(sensorID);
+  putMsg.concat(",\"value\":");
+  putMsg.concat(value);
+  putMsg.concat(", \"time\":\"");
+  putMsg.concat(time);
   putMsg.concat("\"}");
 
   Serial.println(putMsg);
 
   int httpResponseCode = http.PUT(putMsg);
-  Serial.println(httpResponseCode);
 
   http.end();
+}
 
-  delay(2000);
+
+
+void loop() {
+  blinkLed();
+  // printOled();
+
+
+  sendData(100, "testing", "time");
+
+
+
+  // http.begin("http://hasdata.xyz/");
+  // http.addHeader("Content-Type", "application/json");
+
+  // String putMsg = "{\"mac\":\"";
+  // putMsg.concat('mac');
+  // putMsg.concat("\", \"type\":");
+  // putMsg.concat('type');
+  // putMsg.concat(",\"metric\":");
+  // putMsg.concat('metric');
+  // putMsg.concat(", \"value\":\"");
+  // putMsg.concat('value');
+  // putMsg.concat("\"}");
+
+  // Serial.println(putMsg);
+
+  // int httpResponseCode = http.PUT(putMsg);
+  // Serial.println(httpResponseCode);
+
+  // http.end();
+
+  delay(10000);
 }
 
 

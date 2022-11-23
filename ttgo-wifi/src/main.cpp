@@ -21,21 +21,15 @@
 #define LIGHT_SENSOR_PIN 36
 
 int counter = 0;
-HTTPClient http;
-
-
+// int index = 100;
 
 // declare an SSD1306 display object connected to I2C
 Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
-const char* ssid = "WiFi Fritzbox";
-const char* password = "jorisputteneers";
 // const char* ssid = "Techtile";
 // const char* password = "Techtile229";
-// const char* ssid = "HTC";
-// const char* password = "biodesign";
-// const char* ssid = "beyin_gocu_2.4";
-// const char* password = "denizecebora";
+const char* ssid = "beyin_gocu_2.4";
+const char* password = "denizecebora";
 
 
 void setup() {
@@ -49,7 +43,6 @@ void setup() {
   // dont use adc2 pins if you want to use wifi
   while(WiFi.status() != WL_CONNECTED){
       Serial.print(".");
-      oled.print(".");
       delay(100);
   }
 
@@ -73,7 +66,6 @@ void setup() {
   oled.println("MAC");
   oled.setTextSize(1);
   oled.println(WiFi.macAddress());
-  Serial.println(WiFi.localIP());
   oled.display();   
   delay(3000);   
 }
@@ -98,48 +90,12 @@ void printOled(){
   oled.println(readSensor());
   oled.println(WiFi.localIP());
   oled.display();   
-  delay(2000);
+  delay(100);
 }
 
 void loop() {
   blinkLed();
-
-  // printOled();
-
-
-  //putmsg
-  // http.begin('http://jsonplaceholder.typicode.com/users/1');
-  http.begin("http://hasdata.xyz/");
-  http.addHeader("Content-Type", "application/json");
-
-  String putMsg = "{\"mac\":\"";
-  putMsg.concat('mac');
-  putMsg.concat("\", \"type\":");
-  putMsg.concat('type');
-  putMsg.concat(",\"metric\":");
-  putMsg.concat('metric');
-  putMsg.concat(", \"value\":\"");
-  putMsg.concat('value');
-  putMsg.concat("\"}");
-
-  Serial.println(putMsg);
-
-  int httpResponseCode = http.PUT(putMsg);
-  Serial.println(httpResponseCode);
-
-  http.end();
-
-  delay(2000);
+  printOled();
 }
 
 
-
-
-
-
-// oled.clearDisplay();
-// oled.setTextSize(1);
-// oled.setCursor(0, 10);
-
-// oled.println(putMsg);
-// oled.display(); 
